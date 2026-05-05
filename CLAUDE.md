@@ -30,12 +30,13 @@ For comparison points on what minimal coding-agent prompts look like:
 ```
 ~/.tweakcc/lobotomized-claude-code/        ← THIS repo (canonical, has .git, GitHub remote skrabe/lobotomized-claude-code)
 ~/.tweakcc/system-prompts                  ← symlink → ./system-prompts (tweakcc-fixed reads from here)
-~/dev/lobotomized-claude-code/             ← parallel clone for dev workflow
 
-~/dev/tweakcc-fixed/                       ← the patcher (skrabe/tweakcc-fixed)
+~/dev/tweakcc-fixed/                       ← the patcher (skrabe/tweakcc-fixed, direct fork of Piebald-AI/tweakcc)
 ~/.tweakcc/config.json                     ← user's tweakcc settings (toggles, themes, etc.)
 ~/.tweakcc/orphans-removed-for-X.Y.Z/      ← prompts archived because the binary no longer references them
 ~/.tweakcc/native-binary.backup            ← pristine CC binary (auto-saved before first patch)
+~/.tweakcc/native-claudejs-orig.js         ← pristine extracted JS (auto-saved every --apply)
+~/.tweakcc/native-claudejs-patched.js      ← post-patch JS (auto-saved every --apply; diff this against orig to debug)
 ```
 
 Each `.md` in `system-prompts/` has frontmatter:
@@ -61,29 +62,18 @@ The `variables:` list is metadata; the actual binding happens via the pristine p
 3. Native installations: `cli.js` is embedded in a Bun-compiled binary. tweakcc-fixed extracts via `node-lief`, patches, and repacks.
 4. `--apply` runs through `~/.tweakcc/config.json` toggles for the non-prompt patches (max-effort default, model customizations, themes, etc.) too.
 
-## Tweakcc-fixed status, and the fork-hop problem
+## Tweakcc-fixed (the patcher this repo depends on)
 
-`tweakcc-fixed` is `BenIsLegit/tweakcc-fixed` — a fork of `Piebald-AI/tweakcc` (the upstream maintained by Piebald) carrying ~25 fix commits Ben hadn't gotten upstream-merged yet. **Ben hasn't pushed since 2026-04-22**, while upstream has shipped 10 prompt-version drops (2.1.117 → 2.1.128). At the user's pace, Ben is effectively unmaintained — they're now upstream-of-stale-fork-of-upstream.
+`skrabe/tweakcc-fixed` is the user's **direct fork of `Piebald-AI/tweakcc`** with cherry-picked fixes that aren't upstreamed yet (Bun wrapper crash scoping, regex shape adapts for newer CC versions, the userMessageDisplay rewrite arc, max-effort default, sessionMemory graceful no-op, etc.). The fork-side work happens in `~/dev/tweakcc-fixed`. See [`tweakcc-fixed/AGENTS.md`](https://github.com/skrabe/tweakcc-fixed/blob/main/AGENTS.md) for the patcher-side context.
 
-The user's working fork is `skrabe/tweakcc-fixed`, which is downstream of Ben. The remote layout in `~/dev/tweakcc-fixed`:
+Remotes in `~/dev/tweakcc-fixed`:
 
 ```
-ben       https://github.com/BenIsLegit/tweakcc-fixed   (the stale fork-of-upstream)
-origin    https://github.com/skrabe/tweakcc-fixed       (user's push target)
-upstream  https://github.com/Piebald-AI/tweakcc         (Piebald — actively maintained)
+origin    https://github.com/skrabe/tweakcc-fixed   (user's push target)
+upstream  https://github.com/Piebald-AI/tweakcc     (Piebald — actively maintained source)
 ```
 
-**Migration the user is considering: re-fork directly off `Piebald-AI/tweakcc`, cherry-pick only the still-useful Ben commits, then maintain that fork directly.** Less friction, no dead intermediary. Ben's commits worth preserving (still relevant on current CC):
-
-- `c87898c` — `verbose:X` not replaced inside destructure patterns
-- `3114c5b`, `dc84a6c`, `89555eb`, `cc12f96`, `c66f604`, `9ef9328`, `b963ebf`, `f89a998` — userMessageDisplay bg/wrap/[object Object]/native-Box-attrs fixes
-- `1e28b59` — thinkingVerbs past-tense regex for shrunken `-ed` array
-- `f6ac8f3` — migration test cleanup
-- TS7 build / Linux native-binary patching commits already on `skrabe/tweakcc-fixed`
-
-Some Ben commits are skippable (branding rebumps, version bumps tied to the `tweakcc-fixed` npm name). The rest are real bug fixes against shapes that may have changed again — review each against the current binary before cherry-picking.
-
-If you do this work: `git checkout -b clean-fork upstream/main`, then `git cherry-pick <hash>` per surviving fix. Push to `skrabe/tweakcc-fixed` and update its README to point at upstream as parent.
+There used to be a `BenIsLegit/tweakcc-fixed` intermediary that this repo's earlier docs referenced. That fork-of-fork chain was removed on 2026-05-05 — the GitHub fork was deleted and re-created as a direct fork off Piebald. If you find references to a `ben` remote anywhere, they're stale.
 
 ## When CC releases a new version (the recurring task)
 
