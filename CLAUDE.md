@@ -77,11 +77,36 @@ There used to be a `BenIsLegit/tweakcc-fixed` intermediary that this repo's earl
 
 ## When CC releases a new version (the recurring task)
 
-1. Pull upstream prompt JSONs into `tweakcc-fixed/data/prompts/`. They live as `prompts-X.Y.Z.json` and are the source of truth for the pristine prompt text + identifier maps.
+1. Pull upstream prompt JSONs into `tweakcc-fixed/data/prompts/`. They live as `prompts-X.Y.Z.json` and are the source of truth for the pristine prompt text + identifier maps. **Get them from Piebald, not by extracting locally.** When `git merge upstream/main` doesn't bring the new version yet, check open PRs at `Piebald-AI/tweakcc` — they're typically named `prompts/X.Y.Z` (`gh pr list --repo Piebald-AI/tweakcc --search "prompts/X.Y.Z"` finds it). `gh pr checkout <num> --repo Piebald-AI/tweakcc --detach`, copy the JSON, switch back to main, commit. The naive `tools/promptExtractor.js` finds a strict subset of what Piebald publishes; only fall back to it if upstream genuinely has no PR open. (See `tweakcc-fixed/AGENTS.md` for the full procedure.)
 2. Run `tweakcc-fixed --apply`. It auto-rebases overrides whose pristine content is unchanged across versions; reports conflicts (with `.diff.html`) for ones where pristine diverged.
 3. For conflicts: open the diff HTML, decide whether to keep your override (and update its `ccVersion:` frontmatter) or accept upstream.
 4. Run the verification scan below. **This catches a class of bugs that don't show up in conflict reports.**
-5. Run any patches (`patchesAppliedIndication`, `userMessageDisplay`, `thinkerFormat`, etc.) and watch for `failed to find …` errors — those mean the minified shape changed and `helpers.ts` regexes need a new method appended.
+5. Watch the apply log for "Could not find system prompt" warnings. Each one is a user override that no longer binds to a prompt id. See **Realigning user overrides** below.
+6. Run any patches (`patchesAppliedIndication`, `userMessageDisplay`, `thinkerFormat`, etc.) and watch for `failed to find …` errors — those mean the minified shape changed and `helpers.ts` regexes need a new method appended.
+
+## Realigning user overrides after a sync
+
+Anthropic occasionally renames, restructures, or removes prompts. After a version bump, some user overrides may no longer bind. Identify them:
+
+```python
+import os, json
+USER_DIR = os.path.expanduser('~/.tweakcc/lobotomized-claude-code/system-prompts')
+new_ids = {p['id'] for p in json.load(
+    open(os.path.expanduser('~/dev/tweakcc-fixed/data/prompts/prompts-X.Y.Z.json'))
+)['prompts']}
+user_ids = {f[:-3] for f in os.listdir(USER_DIR) if f.endswith('.md')}
+print(sorted(user_ids - new_ids))
+```
+
+For each missing override, grep the new JSON for distinctive content from the override's body (a unique anchor phrase). Three outcomes:
+
+- **Renamed** (content survives under a new id) → `git mv system-prompts/<old>.md system-prompts/<new>.md`, bump the `ccVersion:` frontmatter.
+- **Inlined** (content folded into a larger prompt) → archive; if the parent prompt's override was rewritten recently it likely already carries the inlined content. Otherwise, copy the relevant section into the parent override before archiving.
+- **Removed** (no distinctive string survives anywhere in the new JSON) → archive: `mv system-prompts/<id>.md ~/.tweakcc/orphans-removed-for-X.Y.Z/`. Recoverable from there or from git history.
+
+Commit message names the rename and lists the archives; `git log -- system-prompts/<id>.md` is how a future-you finds an archived override.
+
+**Cross-version caveat:** if some of your machines are still on the OLD CC version, the apply sync step on those machines will auto-recreate the OLD-id `.md` from pristine (it's still in the old version's JSON). The recreation matches pristine and is harmless but shows up as `??` in `git status`. Just `rm` it after each apply on the old box; it stops happening once everywhere upgrades.
 
 ## Verification rule: every `${VAR}` must exist in the current binary
 
