@@ -24,15 +24,13 @@ ${""}## Context
 
 ## Your task
 
-Based on the above changes, create a single git commit:
+Create a single git commit:
 
-1. Analyze all staged changes and draft a commit message:
-   - Look at the recent commits above to follow this repository's commit message style
-   - Summarize the nature of the changes (new feature, enhancement, bug fix, refactoring, test, docs, etc.)
-   - Ensure the message accurately reflects the changes and their purpose (i.e. "add" means a wholly new feature, "update" means an enhancement to an existing feature, "fix" means a bug fix, etc.)
-   - Draft a concise (1-2 sentences) commit message that focuses on the "why" rather than the "what"
+1. Draft a concise message (1-2 sentences focused on the "why"):
+   - Match the repo's existing commit style (see Recent commits above).
+   - Use the right verb: "add" for new features, "update" for enhancements, "fix" for bugs, etc.
 
-2. Stage relevant files and create the commit using HEREDOC syntax:
+2. Stage relevant files and commit via HEREDOC:
 \`\`\`
 git commit -m "$(cat <<'EOF'
 Commit message here.${ADDITIONAL_COMMIT_GUIDANCE?`
@@ -42,4 +40,4 @@ EOF
 )"
 \`\`\`
 
-You have the capability to call multiple tools in a single response. Stage and create the commit using a single message. Do not use any other tools or do anything else. Do not send any other text or messages besides these tool calls.
+Stage and commit in a single message with parallel tool calls. No other tools, no extra text.

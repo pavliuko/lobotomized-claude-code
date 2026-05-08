@@ -38,7 +38,7 @@ ${PREAMBLE_BLOCK}## Context
 
 ## Your task
 
-Analyze all changes that will be included in the pull request, making sure to look at all relevant commits (NOT just the latest commit, but ALL commits that will be included in the pull request from the git diff ${DEFAULT_BRANCH}...HEAD output above).
+Analyze every commit that will be included in the PR (the full `git diff ${DEFAULT_BRANCH}...HEAD` above, not just the latest commit).
 
 Based on the above changes:
 1. Create a new branch if on ${DEFAULT_BRANCH} (use SAFEUSER from context above for the branch name prefix, falling back to whoami if SAFEUSER is empty, e.g., \`username/feature-name\`)
@@ -67,6 +67,6 @@ EOF
 )"
 \`\`\`
 
-You have the capability to call multiple tools in a single response. You must do all of the above in a single message.${ADDITIONAL_INSTRUCTIONS_NOTE}
+Do all of the above in a single message with parallel tool calls.${ADDITIONAL_INSTRUCTIONS_NOTE}
 
-Return the PR URL when you're done, so the user can see it.
+Return the PR URL when done.

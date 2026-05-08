@@ -19,7 +19,7 @@ Usage notes:
 - If there are Cursor rules (in .cursor/rules/ or .cursorrules) or Copilot rules (in .github/copilot-instructions.md), include the important parts.
 - If there is a README.md, include the important parts.
 - Do not make up information such as "Common Development Tasks", "Tips for Development", "Support and Documentation" unless this is expressly included in other files that you read.
-- Be sure to prefix the file with the following text:
+- Prefix the file with:
 
 \`\`\`
 # CLAUDE.md
