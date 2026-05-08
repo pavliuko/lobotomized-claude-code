@@ -10,16 +10,45 @@ You're a coding agent invoked in this repo. Read this first. It explains what we
 
 CC ships every model the same prompt-by-volume that worked for older Claudes. Opus 4.7 follows instructions more literally, overtriggers on CAPS, and doesn't need the anti-laziness scaffolding. **The goal is to cut bulk and rewrite load-bearing prompts in a register the model behaves better under.**
 
-Six concrete principles, all from the [Opus 4.7 prompting guide](https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/claude-4-7-best-practices). Read it before changing prompts:
+## Mandatory: re-read Anthropic's prompting best practices before editing prompts
+
+**The single canonical source for prompting principles in this repo:**
+[`platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices`](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)
+
+This is the URL Anthropic actively maintains for Opus 4.7 + 4.6 + Sonnet 4.6 + Haiku 4.5. Fetch it fresh at the start of every session that touches `system-prompts/*.md` (`mcp__kindly-web-search__get_content` or `WebFetch`). Do not rely on training-data recall — Anthropic edits this page often, and prompt edits anchored on stale guidance produce regressions.
+
+The digest below is a checklist, not a substitute. Read the URL.
+
+**Opus 4.7 lobotomization checklist** (apply these as the standard for every override edit):
 
 1. **Less is more.** 4.7 is more literal — fewer rules, less drift. If you can cut a sentence without losing information, cut it.
-2. **No CAPS theater.** `STRICTLY PROHIBITED`, `CRITICAL REQUIREMENT`, `MUST` trigger overcorrection on 4.7. Use plain directives.
-3. **Parallel by default.** Independent tool calls go in one message, multiple blocks. The harness prompt explicitly says so.
-4. **Interview before planning.** Plan mode runs Matt Pocock's [grill-me](https://www.aihero.dev/my-grill-me-skill-has-gone-viral) pattern in Phase 1: walk the design tree one decision at a time with a recommended answer.
-5. **No always-on CTAs.** 4.7 follows literal CTAs; an "end every reply with /schedule" prompt becomes spam. Cull always-on upsells.
-6. **Tighter destructive-action guards.** Git commit/push/merge/PR all require explicit confirmation in the current conversation. "Commit and push" splits into two confirmations.
+2. **No CAPS theater.** `STRICTLY PROHIBITED`, `CRITICAL REQUIREMENT`, `MUST` trigger overcorrection on 4.7. Use plain directives. Per Anthropic: dial back from `"CRITICAL: You MUST use this tool when..."` to `"Use this tool when..."`.
+3. **Tell it what to DO, not what NOT to do.** Anthropic's guide is explicit: positive instructions outperform negative ones. "Don't use markdown" → "Respond in flowing prose paragraphs."
+4. **Parallel by default.** Independent tool calls go in one message, multiple blocks. The harness prompt explicitly says so. Anthropic ships canonical `<use_parallel_tool_calls>` snippet — match its shape rather than reinventing.
+5. **Interview before planning.** Plan mode runs Matt Pocock's [grill-me](https://www.aihero.dev/my-grill-me-skill-has-gone-viral) pattern in Phase 1: walk the design tree one decision at a time with a recommended answer.
+6. **No always-on CTAs.** 4.7 follows literal CTAs; an "end every reply with /schedule" prompt becomes spam. Cull always-on upsells.
+7. **Tighter destructive-action guards.** Git commit/push/merge/PR all require explicit confirmation in the current conversation. "Commit and push" splits into two confirmations. Anthropic's reference snippet for this is `<balancing-autonomy-and-safety>` — align our overrides with its phrasing.
+8. **Anti-overengineering.** Anthropic ships a canonical "Avoid over-engineering" snippet covering scope, documentation, defensive coding, abstractions. When our overrides touch this territory, treat the official snippet as the baseline and only diverge intentionally.
+9. **Frontend "AI slop" guard.** Anthropic ships a canonical `<frontend_aesthetics>` snippet. Our `frontend-design` skill override should be a strict subset of (or aligned with) the canonical version, not a reinvention.
+10. **Investigate before answering.** Anthropic's `<investigate_before_answering>` snippet handles anti-hallucination; align our overrides with it.
+11. **Effort respect at low/medium.** 4.7 won't "go above and beyond" at low effort. If our override implies the model should expand scope, state it explicitly.
 
 For migrating prompts when Anthropic releases a new model (Opus 4.6 → 4.7, etc.), the [migration guide](https://docs.claude.com/en/docs/about-claude/models/migration-guide) is canonical. It documents breaking changes (`budget_tokens` → adaptive thinking, prefilled responses removed, sampling params removed on 4.7), silent default changes, and prompt-behavior shifts.
+
+## Workflow when realigning conflicting overrides after a CC version bump
+
+This is the recurring task; do not skip the diff-reading step.
+
+For each conflict reported by `tweakcc-fixed --apply` (or `.diff.html` produced alongside it):
+
+1. **Open the diff HTML.** It shows the pristine-old → pristine-new content for that prompt. Read it. This is the only way to know whether Anthropic added/removed/restructured anything that affects our lobotomization scope.
+2. **Cross-check our override body against the new pristine.** If Anthropic added a new paragraph or rule, decide whether our lobotomization should extend to it. If Anthropic deleted scaffolding our override was countering, our anti-scaffolding text might be obsolete.
+3. **Apply the Opus 4.7 checklist above.** Look for CAPS theater, negative-framed rules, always-on CTAs, redundant scaffolding. Tighten or replace.
+4. **Bump `ccVersion:` frontmatter** to the prompt's `lastModifiedVersion` from `tweakcc-fixed/data/prompts/prompts-X.Y.Z.json`. The apply log lists the targets explicitly.
+5. **Re-apply** locally. Verify zero stderr, zero conflicts, smoke test `claude --print "say hello"`.
+6. **Commit per logical group** with a one-line rationale explaining what changed and why (e.g. "tighten Edit override — drop CAPS, fold in new pristine paragraph as positive guidance").
+
+Just bumping `ccVersion:` without reading the diff is the lazy path. It silences the warning but skips the lobotomization work. Don't take it.
 
 For comparison points on what minimal coding-agent prompts look like:
 - [pi-mono coding-agent](https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent) — main system prompt is ~50 lines including all tool descriptions
