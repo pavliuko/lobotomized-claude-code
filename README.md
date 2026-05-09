@@ -8,14 +8,14 @@ System-prompt overrides for [Claude Code](https://claude.com/claude-code), tuned
 
 CC ships every model the same prompt-by-volume Opus 4.6 needed. 4.7 follows instructions literally, gets jumpier on CAPS, and doesn't need the anti-laziness scaffolding. This repo cuts the bulk and rewrites the load-bearing fragments in a register the model actually behaves better under.
 
-## ~60% leaner on every coding turn
+## ~67% off the daily flow. ~33% off everything.
 
 | What you actually feel | Cut |
 |---|---|
-| **Daily flow** — the 24 fragments that inject every interactive turn (harness, memory, plan mode, the always-on tool descriptions) | **~60% smaller** |
-| Niche stuff — language-specific Anthropic API docs, model migration guide, calendar/cron skills, WSL settings | ~20% smaller |
+| **Daily flow** — the fragments that inject every interactive turn (harness, communication, doing-tasks, executing-actions, memory, always-loaded tool descriptions) | **~67% smaller** |
+| Niche stuff — language-specific Anthropic API docs, model migration guide, calendar/cron skills, WSL settings, Windows tool descriptions | **~32% smaller** |
 
-The first row is what matters. Niche prompts only inject when you trigger that feature (most users never do), so the more modest cut on those barely shows up in real sessions. **Every session carries roughly 30K fewer characters of always-on prompt.** Faster first response, more headroom before compaction, less drift from contradictory always-on rules.
+The first row is what matters. Niche prompts only inject when you trigger that feature (most users never do), so the more modest cut on those barely shows up in real sessions. **Every coding turn carries roughly 20K fewer characters of always-on prompt.** Faster first response, more headroom before compaction, less drift from contradictory always-on rules.
 
 <details>
 <summary>Methodology</summary>
@@ -24,9 +24,9 @@ Numbers measured against pristine CC 2.1.138 prompts. Anthropic doesn't publish 
 
 | | Files | Pristine | After lobotomy | Cut |
 |---|---:|---:|---:|---:|
-| Hot path (always or near-always injected) | 24 | ~50K chars | ~20K chars | −59% |
-| Cold path (conditional / niche) | 259 | ~843K chars | ~686K chars | −19% |
-| Total | 283 | ~893K chars | ~706K chars | −21% |
+| Hot path (always or near-always injected) | ~24 | ~30K chars | ~10K chars | **−67%** |
+| Cold path (conditional / niche) | ~267 | ~889K chars | ~608K chars | **−32%** |
+| Total | 291 | ~919K chars | ~618K chars | **−33%** |
 
 The cold-path bulk is reference content — `data-claude-api-reference-{python,typescript,go,java,csharp,php,ruby}`, the model migration guide, `data-managed-agents-*` API docs, the `skill-*` cron tasks (catch-up, dream, morning-checkin, pre-meeting). None of it injects in normal coding sessions, which is why the headline focuses on the daily-flow row.
 </details>
