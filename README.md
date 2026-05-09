@@ -46,36 +46,25 @@ Inspirations: [pi](https://github.com/earendil-works/pi/tree/main/packages/codin
 
 ## What's in the latest pass
 
-Commit [`aab9240`](https://github.com/skrabe/lobotomized-claude-code/commit/aab9240): 32 files changed, 147 insertions, 753 deletions.
+Commit [`a348cd1`](https://github.com/skrabe/lobotomized-claude-code/commit/a348cd1): per-file review of all 291 prompts — **−33% off pristine total, −43% off the always-on injection per turn.** Fixes the conditional-prompts rule (trim a feature's default behaviour, don't wipe just because it sits behind a flag) and adds counter-weakness scaffolding for documented Opus 4.7 patterns (deferral, wrap-up, diva, verbosity).
 
-Rewrites:
+Headline rewrites:
 
-- `system-prompt-harness-instructions` — added explicit Parallelism section
-- `system-prompt-communication-style` — trimmed
-- `system-prompt-executing-actions-with-care` — sharpened, added "stop and ask before destructive shortcut"
-- `system-prompt-memory-instructions` — trimmed
-- `system-prompt-auto-mode` — trimmed
-- `agent-prompt-explore` — killed read-only CAPS theater (553 → 90 tok)
-- `agent-prompt-plan-mode-enhanced` — same (667 → 180 tok)
-- `system-reminder-plan-mode-is-active-5-phase` — Phase 1 = grill-me interview
-- `system-reminder-plan-mode-approval-tool-enforcement` — killed the cargo-cult phrase list
-- `tool-description-agent-usage-notes` — parallel emphasis
-- `tool-description-readfile` — +parallel reads
-- `tool-description-grep` — +parallel greps
-- `tool-description-edit` — trimmed
-- `tool-description-skill` — trimmed
-- `tool-description-askuserquestion` — trimmed
-- `tool-description-exitplanmode` — trimmed
-- `tool-description-webfetch` — +parallel fetches
-- `tool-description-websearch` — killed `CRITICAL REQUIREMENT` shouting
-- `tool-description-todowrite` — trimmed
-- `tool-description-bash-git-commit-and-pr-creation-instructions` — added conversation-scope confirmation block
+- `system-prompt-doing-tasks-focus` — resurrected as the codebase-ownership prompt: "fix broken code found along the way; don't dismiss as out-of-scope / pre-existing / not-touched-by-us"
+- `system-prompt-doing-tasks-ambitious` — take ambitious / long-running / repeating tasks at face value, surface progress, continue till complete (anti-wrap-up)
+- `system-prompt-harness-instructions` — dropped `${INTRODUCTORY_LINE}` and `${SECURITY_NOTE}` interpolations; kept markdown / permission-mode / system-reminder semantics
+- `system-prompt-communication-style` — "consult user before direction changes / discoveries / blockers unless green-lit"; tighter end-of-turn + code-comment + planning-doc rules
+- `system-prompt-claude-in-chrome-browser-automation` — prefer `agent-browser` CLI; fall back to `mcp__claude-in-chrome__*` only when headless can't reach (logins, profile state, extensions)
+- `system-prompt-partial-compaction-instructions` — merged the keep/drop/condense triage from global CLAUDE.md
 
-Cull:
+Wipes (sibling-duplicate / always-on CTA / 4.7 default / unused feature):
 
-- `system-prompt-proactive-schedule-offer-after-follow-up-work` — deleted (always-on `/schedule` CTA nag)
+- **Tone & meta**: `tone-concise-output-short`, `tool-usage-task-management`, `dream-team-memory-handling`, both `proactive-schedule-offer-*` prompts
+- **Security theatre**: both parts of `agent-prompt-security-monitor-for-autonomous-agent-actions` (~32K combined)
+- **TodoWrite**: `tool-description-todowrite`, `system-reminder-task-tools-reminder`, `system-reminder-todowrite-reminder`
+- **Unused environments / tools**: `tool-description-{computer,powershell,repl}`, `tool-parameter-computer-action`, `tool-description-request-teach-access`, `system-prompt-{powershell-5.1,wsl-managed-settings,avoiding-sleep-powershell,subagent-delegation-examples,writing-subagent-prompts}`
 
-11 orphans dropped (no longer in CC 2.1.138): agent-hook, session-memory-update-instructions, data-session-memory-template, skill-verify-skill-runtime-verification, system-prompt-background-job-behavior, system-prompt-phase-four-of-plan-mod, system-prompt-teammate-communication, system-reminder-invoked-skills, system-reminder-malware-analysis-after-read-tool-call, system-reminder-post-turn-session-summary, tool-description-config.
+`system-reminder-file-modified-externally` dropped its "don't mention to user — they're already aware" suppress-communication phrasing.
 
 ## How it works
 
