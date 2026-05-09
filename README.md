@@ -79,7 +79,7 @@ Cull:
 
 ## How it works
 
-Each `.md` in [`system-prompts/`](./system-prompts) is an override fragment with frontmatter naming the original prompt and the CC version it targets. [`tweakcc-fixed`](https://github.com/BenIsLegit/tweakcc-fixed) reads these and patches the `cli.js` (or native binary) of your installed Claude Code in place.
+Each `.md` in [`system-prompts/`](./system-prompts) is an override fragment with frontmatter naming the original prompt and the CC version it targets. [`tweakcc-fixed`](https://github.com/skrabe/tweakcc-fixed) reads these and patches the `cli.js` (or native binary) of your installed Claude Code in place.
 
 Load-bearing structure (variable substitutions like `${ASK_USER_QUESTION_TOOL_NAME}`, conditional blocks for env flags) is preserved verbatim. Anywhere you see `${...}`, that's CC injecting runtime values — leaving them alone is non-negotiable.
 
@@ -89,12 +89,15 @@ Load-bearing structure (variable substitutions like `${ASK_USER_QUESTION_TOOL_NA
 git clone https://github.com/skrabe/lobotomized-claude-code ~/.tweakcc/lobotomized-claude-code
 mv ~/.tweakcc/system-prompts ~/.tweakcc/system-prompts.bak 2>/dev/null
 ln -sfn ~/.tweakcc/lobotomized-claude-code/system-prompts ~/.tweakcc/system-prompts
-npx tweakcc-fixed@latest --apply
+
+git clone https://github.com/skrabe/tweakcc-fixed ~/dev/tweakcc-fixed
+cd ~/dev/tweakcc-fixed && pnpm install && pnpm build
+node ~/dev/tweakcc-fixed/dist/index.mjs --apply
 ```
 
-Re-run `npx tweakcc-fixed@latest --apply` after every Claude Code update.
+Re-run `node ~/dev/tweakcc-fixed/dist/index.mjs --apply` after every Claude Code update.
 
-`tweakcc-fixed` is a [maintained fork](https://github.com/skrabe/tweakcc-fixed) of [Piebald-AI/tweakcc](https://github.com/Piebald-AI/tweakcc) carrying patches that make `--apply` work on current CC versions. Mainline `tweakcc` lags on those fixes.
+`skrabe/tweakcc-fixed` is a [direct fork](https://github.com/skrabe/tweakcc-fixed) of [Piebald-AI/tweakcc](https://github.com/Piebald-AI/tweakcc) carrying unmerged patches that make `--apply` work on current CC versions. The `tweakcc-fixed` package on npm is a different fork ([BenIsLegit/tweakcc-fixed](https://github.com/BenIsLegit/tweakcc-fixed)) — these overrides are tuned against `skrabe/tweakcc-fixed` HEAD, so install from source above rather than via `npx`.
 
 ## License
 
