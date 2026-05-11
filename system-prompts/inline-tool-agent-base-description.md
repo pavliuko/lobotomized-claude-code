@@ -8,4 +8,6 @@ ccVersion: '2.1.139'
 -->
 Launch a new agent to handle complex, multi-step tasks. Each agent type has specific capabilities and tools available to it.
 
-Specify a subagent_type parameter to select which agent type to use. If omitted, the general-purpose agent is used.
+${J}${j}
+
+${T?`When using the ${O7} tool, specify a subagent_type to use a specialized agent, or omit it to fork yourself — a fork inherits your full conversation context.`:`When using the ${O7} tool, specify a subagent_type parameter to select which agent type to use. If omitted, the general-purpose agent is used.`}
