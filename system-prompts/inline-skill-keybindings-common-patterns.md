@@ -7,4 +7,4 @@ injectionGate: 'keybindings-help skill'
 ccVersion: '2.1.139'
 inlineBlobRawPassthrough: 'true'
 -->
-"## Common Patterns","","### Rebind a key","To change the external editor shortcut from `ctrl+g` to `ctrl+e`:","```json",hH(Wr3,null,2),"```","","### Add a chord binding","```json",hH(Gr3,null,2),"```"
+"## Common Patterns","","### Rebind a key","To change the external editor shortcut from `ctrl+g` to `ctrl+e`:","```json","{\n  \"context\": \"Chat\",\n  \"bindings\": {\n    \"ctrl+g\": null,\n    \"ctrl+e\": \"chat:externalEditor\"\n  }\n}","```","","### Add a chord binding","```json","{\n  \"context\": \"Global\",\n  \"bindings\": {\n    \"ctrl+k ctrl+t\": \"app:toggleTodos\"\n  }\n}","```"
