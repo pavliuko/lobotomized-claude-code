@@ -1,0 +1,13 @@
+<!--
+name: 'Inline blob: tool agent base description'
+description: 'TOOL_BASE_DESCRIPTION for the Agent/Task tool. Referenced from agent-usage-notes via ${TOOL_BASE_DESCRIPTION}.'
+inlineBlobAnchor: "`Launch a new agent to handle complex, multi-step tasks\\. Each agent type has specific capabilities"
+inlineBlobKind: 'template'
+injectionGate: 'Agent tool loaded (default-on for coding sessions)'
+ccVersion: '2.1.138'
+-->
+Launch a new agent to handle complex, multi-step tasks. Each agent type has specific capabilities and tools available to it.
+
+${J}${j}
+
+${T?`When using the ${O7} tool, specify a subagent_type to use a specialized agent, or omit it to fork yourself \u2014 a fork inherits your full conversation context.`:`When using the ${O7} tool, specify a subagent_type parameter to select which agent type to use. If omitted, the general-purpose agent is used.`}
