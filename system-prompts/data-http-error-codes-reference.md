@@ -3,7 +3,7 @@ name: 'Data: HTTP error codes reference'
 description: >-
   Reference for HTTP error codes returned by the Claude API with common causes
   and handling strategies
-ccVersion: 2.1.128
+ccVersion: 2.1.141
 -->
 # HTTP Error Codes Reference
 
@@ -38,12 +38,12 @@ This file documents HTTP error codes returned by the Claude API, their common ca
 
 ```json
 {
-  \"type\": \"error\",
-  \"error\": {
-    \"type\": \"invalid_request_error\",
-    \"message\": \"messages: roles must alternate between \\\"user\\\" and \\\"assistant\\\"\"
+  "type": "error",
+  "error": {
+    "type": "invalid_request_error",
+    "message": "messages: roles must alternate between \"user\" and \"assistant\""
   },
-  \"request_id\": \"req_011CSHoEeqs5C35K2UUqR7Fy\"
+  "request_id": "req_011CSHoEeqs5C35K2UUqR7Fy"
 }
 ```
 
@@ -115,7 +115,7 @@ Some 400 errors are specifically related to parameter validation:
 **Model-specific 400s on Opus 4.7:**
 
 - `temperature`, `top_p`, `top_k` are removed — sending any of them returns 400. Delete the parameter; see `shared/model-migration.md` → Per-SDK Syntax Reference.
-- `thinking: {type: \"enabled\", budget_tokens: N}` is removed — sending it returns 400. Use `thinking: {type: \"adaptive\"}` instead.
+- `thinking: {type: "enabled", budget_tokens: N}` is removed — sending it returns 400. Use `thinking: {type: "adaptive"}` instead.
 
 **Common mistake with extended thinking on older models (Opus 4.6 and earlier):**
 
@@ -174,7 +174,7 @@ thinking: budget_tokens=10000, max_tokens=16000
 | Mistake                         | Error            | Fix                                                     |
 | ------------------------------- | ---------------- | ------------------------------------------------------- |
 | `temperature`/`top_p`/`top_k` on Opus 4.7 | 400    | Remove the parameter (see `shared/model-migration.md`)  |
-| `budget_tokens` on Opus 4.7     | 400              | Use `thinking: {type: \"adaptive\"}`                      |
+| `budget_tokens` on Opus 4.7     | 400              | Use `thinking: {type: "adaptive"}`                      |
 | `budget_tokens` >= `max_tokens` (older models) | 400 | Ensure `budget_tokens` < `max_tokens`                  |
 | Typo in model ID                | 404              | Use valid model ID like `{{OPUS_ID}}`               |
 | First message is `assistant`    | 400              | First message must be `user`                            |
@@ -215,7 +215,7 @@ try {
   const response = await client.messages.create({...});
 } catch (error) {
   const msg = error instanceof Error ? error.message : String(error);
-  if (msg.includes(\"429\") || msg.includes(\"rate_limit\")) { ... }
+  if (msg.includes("429") || msg.includes("rate_limit")) { ... }
 }
 ```
 
@@ -223,12 +223,12 @@ All exception classes extend `Anthropic.APIError`, which has a `status` property
 
 ### Error `.type` Field
 
-All `APIStatusError` subclasses now expose a `.type` property (Python: `.type`, TypeScript: `.type`, Java: `.errorType()`, Go: `.Type()`, Ruby: `.type`, PHP: `.type`) that returns the API error type string (e.g., `\"invalid_request_error\"`, `\"authentication_error\"`, `\"rate_limit_error\"`, `\"overloaded_error\"`). Use this for programmatic error classification when you need finer granularity than the HTTP status code — for example, distinguishing `\"billing_error\"` from `\"permission_error\"` (both map to 403).
+All `APIStatusError` subclasses now expose a `.type` property (Python: `.type`, TypeScript: `.type`, Java: `.errorType()`, Go: `.Type()`, Ruby: `.type`, PHP: `.type`) that returns the API error type string (e.g., `"invalid_request_error"`, `"authentication_error"`, `"rate_limit_error"`, `"overloaded_error"`). Use this for programmatic error classification when you need finer granularity than the HTTP status code — for example, distinguishing `"billing_error"` from `"permission_error"` (both map to 403).
 
 ```python
 except anthropic.APIStatusError as e:
-    if e.type == \"rate_limit_error\":
+    if e.type == "rate_limit_error":
         # handle rate limiting
-    elif e.type == \"overloaded_error\":
+    elif e.type == "overloaded_error":
         # handle overload
 ```
