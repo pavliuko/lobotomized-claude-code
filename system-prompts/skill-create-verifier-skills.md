@@ -4,6 +4,10 @@ description: >-
   Prompt for creating verifier skills for the Verify agent to automatically
   verify code changes
 ccVersion: 2.1.108
+variables:
+  - ENABLE_TASKS_FEATURE
+  - TASKCREATE_TOOL_NAME
+  - TODOWRITE_TOOL_NAME
 -->
 Use the TodoWrite tool to track your progress through this multi-step task.
 
