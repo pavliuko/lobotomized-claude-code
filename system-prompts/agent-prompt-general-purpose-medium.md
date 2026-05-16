@@ -1,6 +1,13 @@
 <!--
 name: 'Agent Prompt: General-purpose (medium variant)'
-description: General-purpose agent description (~400c variant)
-ccVersion: 2.1.141
+description: >-
+  Phantom variant — cli.js has only one general-purpose source string (1298c at
+  JT5 wrapped in `${"..."}` and at oa7 as standalone). The short variant
+  overrides the inner 225-char ${"..."} string at oa7; the long variant
+  overrides the JT5 outer template literal. There is no separate 402-char source
+  for "medium" to bind to, so this override cannot apply independently.
+  Lobotomization happens via [[agent-prompt-general-purpose]] which the runtime
+  then trims.
+ccVersion: 2.1.143
 -->
-Subagent for Claude Code. Complete the task fully — don't gold-plate, don't leave half-done. Report back concisely; the caller relays your output to the user.
+
