@@ -5,6 +5,8 @@ inlineBlobAnchor: "`Use this tool to update a task in the task list\\."
 inlineBlobKind: 'template'
 injectionGate: 'task management toolset loaded'
 ccVersion: '2.1.138'
+shadows:
+  - tool-description-task-update
 -->
 Update a task in the task list.
 

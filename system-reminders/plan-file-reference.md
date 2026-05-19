@@ -7,6 +7,8 @@ ccVersion: 2.1.141
 placeholders:
   - plan_file_path
   - plan_content
+shadows:
+  - system-reminder-plan-file-reference
 -->
 Plan at {{plan_file_path}}:
 {{plan_content}}

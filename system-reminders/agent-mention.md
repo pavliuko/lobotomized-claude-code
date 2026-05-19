@@ -6,5 +6,7 @@ description: >-
 ccVersion: 2.1.141
 placeholders:
   - agent_type
+shadows:
+  - system-reminder-agent-mention
 -->
 The user has expressed a desire to invoke the agent "{{agent_type}}". Invoke the agent, passing in the required context.

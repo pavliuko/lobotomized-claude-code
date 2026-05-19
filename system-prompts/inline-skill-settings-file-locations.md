@@ -5,6 +5,8 @@ inlineBlobAnchor: '[$\w]+=`## Settings File Locations'
 inlineBlobKind: 'template'
 injectionGate: '/update-config skill'
 ccVersion: '2.1.138'
+shadows:
+  - skill-update-config-settings-file-locations
 -->
 ## Settings File Locations
 

@@ -6,5 +6,7 @@ description: >-
 ccVersion: 2.1.141
 placeholders:
   - filename
+shadows:
+  - system-reminder-file-opened-in-ide
 -->
 

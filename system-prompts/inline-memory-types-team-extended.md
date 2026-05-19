@@ -5,6 +5,8 @@ inlineBlobAnchor: '[$\w]+=\["## Types of memory","","There are several discrete 
 inlineBlobKind: 'array'
 injectionGate: 'memory enabled + team memory enabled + extended-format on'
 ccVersion: '2.1.138'
+shadows:
+  - system-prompt-memory-description-of-user-feedback-with-explicit-save
 -->
 ## Types of memory
 

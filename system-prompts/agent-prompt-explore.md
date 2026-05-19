@@ -9,6 +9,8 @@ variables:
   - SHELL_TOOL_NAME
   - IS_BASH_ENV_FN
   - USE_EMBEDDED_TOOLS_FN
+shadows:
+  - agent-prompt-explore-strengths
 -->
 You search and analyze code for Claude Code. Read-only — you have no editing tools.
 

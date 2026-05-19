@@ -7,6 +7,9 @@ ccVersion: 2.1.141
 placeholders:
   - filename
   - snippet
+shadows:
+  - system-reminder-file-modification-detected-budget-exceeded
+  - system-reminder-file-modified-externally
 -->
 {{filename}} changed externally — don't revert unless asked:
 {{snippet}}

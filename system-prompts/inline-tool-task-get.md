@@ -5,6 +5,8 @@ inlineBlobAnchor: "`Use this tool to retrieve a task by its ID from the task lis
 inlineBlobKind: 'template'
 injectionGate: 'task management toolset loaded'
 ccVersion: '2.1.138'
+shadows:
+  - tool-description-task-get
 -->
 Retrieve a task by its ID — full description, context, and dependencies. Use before starting work or after being assigned a task.
 

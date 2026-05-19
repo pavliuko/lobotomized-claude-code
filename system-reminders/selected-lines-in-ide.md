@@ -9,5 +9,7 @@ placeholders:
   - line_end
   - filename
   - selected_text
+shadows:
+  - system-reminder-lines-selected-in-ide
 -->
 

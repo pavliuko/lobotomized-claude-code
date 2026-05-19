@@ -8,5 +8,7 @@ placeholders:
   - used
   - total
   - remaining
+shadows:
+  - system-reminder-token-usage
 -->
 

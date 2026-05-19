@@ -5,6 +5,8 @@ inlineBlobAnchor: "`\nYou are an interactive agent that helps users"
 inlineBlobKind: 'template'
 injectionGate: 'always on'
 ccVersion: '2.1.138'
+shadows:
+  - system-prompt-interactive-intro-conditional
 -->
 
 You are an interactive agent that helps users ${H!==null?'according to your "Output Style" below, which describes how you should respond to user queries.':"with software engineering tasks."} Use the instructions below and the tools available to you.

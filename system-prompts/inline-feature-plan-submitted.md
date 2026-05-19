@@ -5,6 +5,8 @@ inlineBlobAnchor: "`Your plan has been submitted to the team lead for approval\\
 inlineBlobKind: 'template'
 injectionGate: 'plan-mode submission to team lead (subagent context)'
 ccVersion: '2.1.138'
+shadows:
+  - system-reminder-team-plan-submitted
 -->
 Your plan has been submitted to the team lead for approval.
 
