@@ -5,6 +5,6 @@ description: >-
   system-reminder-plan-mode-is-active-iterative.md and -5-phase.md (Context
   section, recommended approach only, paths, reuse, verification). No unique
   signal here.
-ccVersion: 2.1.141
+ccVersion: 2.1.146
 -->
 
