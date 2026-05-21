@@ -1,11 +1,11 @@
 <!--
-name: 'Skill: Simplify'
-description: Instructions for simplifying code
-ccVersion: 2.1.116
+name: 'Skill: Code Review'
+description: Instructions for reviewing and cleaning up changed code
+ccVersion: 2.1.146
 variables:
   - AGENT_TOOL_NAME
 -->
-# Simplify: Code Review and Cleanup
+# Code Review and Cleanup
 
 Review all changed files for reuse, quality, and efficiency. Fix any issues found.
 
