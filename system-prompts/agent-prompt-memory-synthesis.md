@@ -3,7 +3,7 @@ name: 'Agent Prompt: Memory synthesis'
 description: >-
   Subagent that reads persistent memory files and returns a JSON synthesis of
   only the information relevant to each query, with cited filenames
-ccVersion: 2.1.150
+ccVersion: 2.1.148
 variables:
   - OPTIONAL_TAIL_NOTE
 -->

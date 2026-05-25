@@ -4,7 +4,7 @@ description: >-
   Describes the Workflow tool (alias RunWorkflow) — runs a deterministic
   JavaScript workflow script that orchestrates subagents via
   agent()/parallel()/pipeline()/phase(); env-gated behind CLAUDE_CODE_WORKFLOWS
-ccVersion: 2.1.146
+ccVersion: 2.1.150
 variables:
   - WORKFLOW_INVOCATION_QUALIFIER
   - WORKFLOW_RESEND_NOTE
@@ -13,6 +13,8 @@ variables:
   - WORKFLOW_GROUP_GLYPH
 -->
 Execute a workflow script that orchestrates multiple subagents deterministically. Workflows run in the background — this tool returns immediately with a task ID, and a <task-notification> arrives when the workflow completes. Use /workflows to watch live progress.
+
+Use workflows to encode fan-out, verification, synthesis, and scale that one context should not hold. If the work-list is unclear, scout inline first, then call Workflow once the orchestration shape is known.
 
 Call this tool only when the user has explicitly opted into multi-agent orchestration. Workflows can spawn dozens of agents and consume a large amount of tokens; the user must request that scale, not have it inferred. Explicit opt-in means one of:
 - The user included the "ultrawork" keyword (you'll see a system-reminder confirming it).

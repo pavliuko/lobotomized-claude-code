@@ -3,7 +3,7 @@ name: 'Skill: Code Review (findings JSON output)'
 description: >-
   Shared output spec for the code-review skill — findings as a JSON array with
   file/line/summary/failure_scenario
-ccVersion: 2.1.150
+ccVersion: 2.1.148
 variables:
   - MAX_FINDINGS
 -->

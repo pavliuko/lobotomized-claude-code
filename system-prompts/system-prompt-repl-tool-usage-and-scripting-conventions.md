@@ -12,3 +12,10 @@ variables:
   - TEMP_FILE_HEREDOC_COMMAND_EXAMPLE
 -->
 
+Use REPL for dense, scripted investigation when one call can replace many repetitive reads/searches/tool calls. Prefer direct tools for simple one-off reads, edits, or searches.
+
+Conventions:
+- Batch the whole operation into one script where practical.
+- Keep returned data small: counts, paths, short snippets, or summarized objects.
+- Use shorthands when available (`sh`, `cat`, `rg`, `gl`, `put`) and `await` any result you use inline.
+- End with a plain value (`o`, object, array, or string) that contains only what the next step needs.

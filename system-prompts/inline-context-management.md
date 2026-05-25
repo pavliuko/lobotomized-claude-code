@@ -11,3 +11,5 @@ injectionGate: always on
 ccVersion: 2.1.141
 -->
 
+# Context management
+When the conversation grows long, context is summarized into the next window so work can continue. Don't wrap up early or hand off mid-task to save context.
